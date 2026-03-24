@@ -1,0 +1,69 @@
+"""
+01_collect_data.py — Download all FRED data for the Lock-In Effect analysis
+=============================================================================
+Prerequisites: pip install fredapi pandas
+"""
+
+import os, time, pandas as pd
+from fredapi import Fred
+from dotenv import load_dotenv
+
+load_dotenv()  # Load env vars from .env file
+
+FRED_API_KEY = os.environ.get("FRED_API_KEY")
+if not FRED_API_KEY:
+    raise ValueError("Set FRED_API_KEY env var. Free key: https://fred.stlouisfed.org/docs/api/api_key.html")
+
+fred = Fred(api_key=FRED_API_KEY)
+RAW = os.path.join(os.path.dirname(__file__), "..", "data", "raw")
+os.makedirs(RAW, exist_ok=True)
+
+STATES = {"AL":"Alabama","AK":"Alaska","AZ":"Arizona","AR":"Arkansas","CA":"California",
+"CO":"Colorado","CT":"Connecticut","DE":"Delaware","DC":"District of Columbia","FL":"Florida",
+"GA":"Georgia","HI":"Hawaii","ID":"Idaho","IL":"Illinois","IN":"Indiana","IA":"Iowa",
+"KS":"Kansas","KY":"Kentucky","LA":"Louisiana","ME":"Maine","MD":"Maryland","MA":"Massachusetts",
+"MI":"Michigan","MN":"Minnesota","MS":"Mississippi","MO":"Missouri","MT":"Montana","NE":"Nebraska",
+"NV":"Nevada","NH":"New Hampshire","NJ":"New Jersey","NM":"New Mexico","NY":"New York",
+"NC":"North Carolina","ND":"North Dakota","OH":"Ohio","OK":"Oklahoma","OR":"Oregon",
+"PA":"Pennsylvania","RI":"Rhode Island","SC":"South Carolina","SD":"South Dakota",
+"TN":"Tennessee","TX":"Texas","UT":"Utah","VT":"Vermont","VA":"Virginia","WA":"Washington",
+"WV":"West Virginia","WI":"Wisconsin","WY":"Wyoming"}
+
+START, END = "2000-01-01", "2025-12-31"
+
+def fetch(sid, label=None):
+    try:
+        s = fred.get_series(sid, observation_start=START, observation_end=END)
+        s.name = label or sid; time.sleep(0.15); return s
+    except Exception as e:
+        print(f"  WARN: {sid}: {e}"); return None
+
+# 1. National
+print("=== National Series ===")
+nat = {}
+for code, lbl in [("MORTGAGE30US","mortgage_rate_30yr"),("FEDFUNDS","fed_funds_rate"),
+                   ("WPU0811","ppi_lumber"),("WPUSI012011","ppi_construction_inputs"),
+                   ("CUSR0000SAH1","cpi_shelter")]:
+    print(f"  {code}..."); s = fetch(code, lbl)
+    if s is not None: nat[lbl] = s
+ndf = pd.DataFrame(nat); ndf.index.name = "date"
+if "mortgage_rate_30yr" in ndf: ndf["mortgage_rate_30yr"] = ndf["mortgage_rate_30yr"].resample("MS").mean()
+ndf = ndf.resample("MS").last()
+ndf.to_csv(os.path.join(RAW, "national_series.csv"))
+print(f"  Saved national_series.csv ({len(ndf)} rows)")
+
+# 2-4. State series
+for suffix, name, fname in [("BPPRIVSA","permits","state_permits.csv"),
+                             ("STHPI","hpi","state_hpi.csv"),
+                             ("UR","unemp","state_unemployment.csv")]:
+    print(f"\n=== State {name} ===")
+    data = {}
+    for st in STATES:
+        code = f"{st}{suffix}"; print(f"  {code}...")
+        s = fetch(code, st)
+        if s is not None: data[st] = s
+    sdf = pd.DataFrame(data); sdf.index.name = "date"
+    if suffix == "STHPI": sdf = sdf.resample("MS").first().ffill()
+    else: sdf = sdf.resample("MS").last()
+    sdf.to_csv(os.path.join(RAW, fname))
+    print(f"  Saved {fname} ({len(sdf)} rows, {len(sdf.columns)} states)")
