@@ -1,0 +1,13 @@
+,Model A (New Listings),Model B (Permits)
+Rate Gap (B1),-0.0928,-0.0008
+  SE,(0.0060),(0.0087)
+  p-value,0.0000,0.9285
+HPI YoY,-0.0185***,0.0140***
+Unemp Rate,-0.0243***,-0.0460***
+Median DOM,-0.0098,—
+Net Migration (lag),-0.0040,0.0173***
+State FE,Yes,Yes
+Quarter FE,Yes,Yes
+Clustered SE,By State,By State
+Within R-sq,0.4591,0.2601
+N,"1,887","2,601"
