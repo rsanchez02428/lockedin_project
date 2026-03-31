@@ -136,6 +136,9 @@ lockin_project/
 |       ├── r2_monotonic_gradient.png
 │       ├── robustness_comparison.csv # All models side-by-side
 │       └── robustness_comparison_chart.png
+|
+├── scripts/
+|   └── 01_fred_data_collection
 │
 └── README.md
 ```
