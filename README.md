@@ -119,27 +119,25 @@ lockin_project/
 │       └── model_r5_post2022.csv     # Post-2022 subset (714 obs)
 │
 ├── notebooks/
-│   ├── 00_pre_merge_eda.ipynb        # Raw data exploration & validation
-│   ├── 01_panel_construction.ipynb   # Data cleaning, aggregation & merge
+│   ├── 01_pre_merge_eda.ipynb        # Raw data exploration & validation
+│   ├── 02_panel_construction.ipynb   # Data cleaning, aggregation & merge
 │   ├── 03_post_merge_eda.ipynb       # Analytical EDA (10 diagnostic plots)
 │   ├── 04_regression.ipynb           # Primary models (A, B, C) + diagnostics
 │   └── 05_robustness.ipynb           # Robustness suite (R1–R6)
 │
 ├── output/
+|   ├── eda/                          # Pre-merge EDA plots (8 PNGS)
 │   ├── eda_post/                     # Post-merge EDA plots (10 PNGs)
 │   ├── regression/
 │   │   ├── model_ab_comparison.csv   # Side-by-side Model A vs B
 │   │   ├── state_lockin_ranking.csv  # Full 51-state ranking
 │   │   └── state_ranking_chart.png   # Severity visualization
 │   ├── robustness/
-│   │   ├── robustness_comparison.csv # All models side-by-side
-│   │   └── robustness_comparison_chart.png
-│   ├── Post_Merge_EDA_Findings.md    # EDA insights & methodology adjustments
-│   └── Updated_Models_and_Methodology.md
+|       ├── r2_monotonic_gradient.png
+│       ├── robustness_comparison.csv # All models side-by-side
+│       └── robustness_comparison_chart.png
 │
-├── Lock_In_Effect_Project_Proposal.docx
-├── README.md
-└── requirements.txt
+└── README.md
 ```
 
 ---
@@ -166,10 +164,7 @@ linearmodels >= 5.3
 git clone https://github.com/<username>/lockin-effect.git
 cd lockin-effect
 
-# 2. Install dependencies
-pip install -r requirements.txt
-
-# 3. Run notebooks in order
+# 2. Run notebooks in order
 #    00 → Pre-merge EDA (data validation)
 #    01 → Panel construction (builds quarterly_panel.csv)
 #    03 → Post-merge EDA (diagnostic plots)
