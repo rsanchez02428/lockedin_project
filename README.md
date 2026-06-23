@@ -256,7 +256,6 @@ How migration patterns interact with the lock-in — states losing population fa
 - Bureau of Labor Statistics. *Local Area Unemployment Statistics.* Via FRED
 - Zillow Research. *Zillow Home Value Index (ZHVI).* https://www.zillow.com/research/data
 - Realtor.com Research. *Inventory Core Metrics.* https://www.realtor.com/research/data
-- Gyourko, J., Hartley, J.S., & Krimmel, J. (2021). "The Local Residential Land Use Regulatory Environment Across U.S. Housing Markets." *Journal of Urban Economics*, 124.
 
 ---
 
