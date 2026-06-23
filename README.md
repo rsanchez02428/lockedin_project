@@ -201,6 +201,39 @@ High lock-in states (top quartile) vs low lock-in states (bottom quartile) plott
 
 ---
 
+## Interactive Dashboard
+
+A 5-page Power BI dashboard provides an interactive interface for exploring the lock-in effect across all 50 states and DC.
+
+### Page 1 — National Overview
+Key metrics and the rate divergence that created the lock-in.
+
+![National Overview](dashboards\page1_national_overview.png)
+
+### Page 2 — State Severity Ranking
+All 51 states ranked by lock-in impact, filterable by region and severity tier.
+
+![Severity Ranking](dashboards\page2_severity_ranking.png)
+
+### Page 3 — State Deep Dive
+Select any state for a detailed breakdown of its rate gap, listings, price growth, and labor market.
+
+![State Deep Dive](dashboards\page3_state_deep_dive.png)
+
+### Page 4 — Supply Impact
+Economic magnitude of the lock-in: ~1 million fewer listings per year nationally.
+
+![Supply Impact](dashboards\page4_supply_impact.png)
+
+### Page 5 — Demographics & Migration
+How migration patterns interact with the lock-in — states losing population face the most severe effects.
+
+![Demographics](dashboards\page5_demographics.png)
+
+> Download `mortgage_rate_lockIn_dashboard.pbix` and open in [Power BI Desktop](https://powerbi.microsoft.com/desktop/) (free) for full interactivity.
+
+---
+
 ## Limitations
 
 - **Entity FE only (no time FE) in primary specification.** Time fixed effects absorb the common rate gap movement, leaving insufficient variation for identification. The tradeoff is that national-level confounders (consumer sentiment, stock market effects) are uncontrolled. Model R5 (post-2022 subsample) partially addresses this.
